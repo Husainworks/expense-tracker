@@ -3,6 +3,7 @@ require("dotenv").config();
 const cors = require("cors");
 const path = require("path");
 const connectDB = require("./config/db");
+const authRoutes = require("./routes/authRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,10 +20,12 @@ app.use(
 // Middleware to handle parsing data from the body
 app.use(express.json());
 
-// Connect to database
+// Connect to database ---------------------------------------------------------------------
 connectDB().then(() => console.log("MongoDB connected successfully"));
 
-app.use("api/v1/auth", authRoutes);
+// API Route ---------------------------------------------------------------------
+app.use("/api/v1/auth", authRoutes);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
