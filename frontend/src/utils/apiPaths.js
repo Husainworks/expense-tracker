@@ -26,5 +26,3 @@ export const API_PATHS = {
     UPLOAD_IMAGE: "/api/v1/auth/upload-image",
   },
 };
-
-// 1:54:11
