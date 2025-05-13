@@ -13,6 +13,8 @@ import { RecentTransactions } from "../../components/Dashboard/RecentTransaction
 import { FinanceOverview } from "../../components/Dashboard/FinanceOverview";
 import { ExpenseTransactions } from "../../components/Dashboard/ExpenseTransactions";
 import { Last30DaysExpenses } from "../../components/Dashboard/Last30DaysExpenses";
+import { RecentIncomeOverview } from "../../components/Dashboard/RecentIncomeOverview";
+import { RecentIncome } from "../../components/Dashboard/RecentIncome";
 
 const Home = () => {
   useUserAuth();
@@ -81,6 +83,18 @@ const Home = () => {
             totalBalance={dashboardData?.totalBalance || 0}
             totalIncome={dashboardData?.totalIncome || 0}
             totalExpense={dashboardData?.totalExpense || 0}
+          />
+
+          <RecentIncomeOverview
+            data={
+              dashboardData?.last60DaysIncome?.transactions?.slice(0, 4) || []
+            }
+            totalIncome={dashboardData?.totalIncome || 0}
+          />
+
+          <RecentIncome
+            transactions={dashboardData?.last60DaysIncome?.transactions}
+            onSeeMore={() => navigate("/income")}
           />
 
           <ExpenseTransactions

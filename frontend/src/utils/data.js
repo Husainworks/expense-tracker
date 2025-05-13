@@ -32,4 +32,4 @@ export const SIDE_MENU_DATA = [
   },
 ];
 
-export const COLORS = ["#875CF5", "#FA2C37", "#FF6900"];
+export const COLORS = ["#875CF5", "#FA2C37", "#FF6900", "#4f39f6"];
