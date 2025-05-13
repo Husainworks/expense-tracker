@@ -31,3 +31,5 @@ export const SIDE_MENU_DATA = [
     path: "logout",
   },
 ];
+
+export const COLORS = ["#875CF5", "#FA2C37", "#FF6900"];
