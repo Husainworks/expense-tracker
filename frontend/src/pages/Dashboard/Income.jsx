@@ -36,7 +36,7 @@ const Income = () => {
         setIncomeData(response.data);
       }
     } catch (error) {
-      console.log("Something went wrong. PLease try again", error);
+      console.log("Something went wrong. Please try again", error);
     } finally {
       setLoading(false);
     }
@@ -53,6 +53,10 @@ const Income = () => {
     }
     if (!amount || isNaN(amount) || Number(amount) <= 0) {
       toast.error("Amount should be a valid number and greater than 0.");
+      return;
+    }
+    if (!date) {
+      toast.error("Date is required.");
       return;
     }
 
@@ -102,7 +106,29 @@ const Income = () => {
   };
 
   // Handle Download Income Details
-  const handleDownloadIncome = async () => {};
+  const handleDownloadIncome = async () => {
+    try {
+      const response = await axiosInstance.get(
+        API_PATHS.INCOME.DOWNLOAD_INCOME,
+        {
+          responseType: "blob",
+        }
+      );
+
+      // Creating a URL for the blob
+      const URL = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = URL;
+      link.setAttribute("download", "income_details.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+      window.URL.revokeObjectURL(URL);
+    } catch (error) {
+      console.error("Error while Downloading Income Details:", error);
+      toast.error("Failed to download income details. Please try again");
+    }
+  };
 
   useEffect(() => {
     fetchAllIncome();
