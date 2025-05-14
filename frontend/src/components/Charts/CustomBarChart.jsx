@@ -24,7 +24,7 @@ export const CustomBarChart = ({ data }) => {
           <CartesianGrid stroke="none" />
 
           <XAxis
-            dataKey="month"
+            dataKey="date"
             tick={{ fontSize: 12, fill: "#555" }}
             stroke="none"
           />
