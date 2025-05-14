@@ -101,18 +101,36 @@ const getUserInfo = async (req, res) => {
 };
 
 // Upload Profile Photo
-const uploadPhoto = (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({
-      message: "No file uploaded",
+const uploadPhoto = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({
+        message: "No file uploaded",
+      });
+    }
+
+    const imageURL = `${req.protocol}://${req.get("host")}/uploads/${
+      req.file.filename
+    }`;
+
+    // Assuming userId is passed in the body or query
+    const { userId } = req.body;
+
+    // Update the user's profile with the new image URL
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { profileImgURL: imageURL }, // Update the user's profile image URL
+      { new: true } // Return the updated user
+    );
+
+    res.status(200).json({
+      imageURL, // Send back the image URL and updated user
+      updatedUser, // Return the updated user object
     });
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
-
-  const imageURL = `${req.protocol}://${req.get("host")}/uploads/${
-    req.file.filename
-  }`;
-
-  res.status(200).json({ imageURL });
 };
 
 module.exports = { registerUser, loginUser, getUserInfo, uploadPhoto };
