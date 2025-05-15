@@ -31,7 +31,7 @@ export const Navbar = ({ activeMenu }) => {
             <Link to="/dashboard">Expense Tracker</Link>
           </h2>
 
-          <Link to="/profile">
+          <Link to={`/profile/${user?._id}`}>
             {user?.profileImgURL ? (
               <img
                 src={user?.profileImgURL || ""}
