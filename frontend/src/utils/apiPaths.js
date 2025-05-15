@@ -6,6 +6,7 @@ export const API_PATHS = {
     LOGIN: "/api/v1/auth/login",
     REGISER: "/api/v1/auth/register",
     GET_USER_INFO: "/api/v1/auth/getUser",
+    DELETE_USER: (userId) => `/api/v1/auth/profile/${userId}`,
   },
   DASHBOARD: {
     GET_DATA: "/api/v1/dashboard",

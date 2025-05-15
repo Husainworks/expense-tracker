@@ -9,6 +9,10 @@ import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { RecentIncome } from "../../components/Dashboard/RecentIncome";
 import { ExpenseTransactions } from "../../components/Dashboard/ExpenseTransactions";
+import { Modal } from "../../components/Modal/Modal";
+import { DeleteAlert } from "../../components/DeleteAlert";
+import { Navigate, useNavigate } from "react-router";
+import toast from "react-hot-toast";
 
 const Profile = () => {
   useUserAuth();
@@ -17,7 +21,13 @@ const Profile = () => {
   const [profilePicURL, setProfilePicURL] = useState("");
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [openDeleteAlert, setOpenDeleteAlert] = useState({
+    show: false,
+    data: null,
+  });
+  const [userId, setUserId] = useState("");
+
+  const navigate = useNavigate();
 
   const fetchDashboardData = async () => {
     if (loading) return;
@@ -45,18 +55,30 @@ const Profile = () => {
     setLoading(true);
 
     try {
-      const response = await axiosInstance.get(
-        `${API_PATHS.AUTH.GET_USER_INFO}`
-      );
+      const response = await axiosInstance.get(API_PATHS.AUTH.GET_USER_INFO);
+      const { email, fullName, _id } = response.data.user;
 
-      const { email, fullName, profileImgURL } = response.data.user;
       setFullName(fullName);
       setEmail(email);
-      setProfilePicURL(profileImgURL);
+      setUserId(_id); // <- Save the ID here
     } catch (error) {
-      console.log("Something went wrong> PLease try again.", error);
+      console.log("Something went wrong. Please try again.", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDeleteProfile = async (id) => {
+    try {
+      await axiosInstance.delete(API_PATHS.AUTH.DELETE_USER(id));
+
+      setOpenDeleteAlert({ show: false, data: null });
+      navigate("/signup");
+    } catch (error) {
+      console.error(
+        "Error while deleting Profile:",
+        error.response?.data?.message || error.message
+      );
     }
   };
 
@@ -81,7 +103,7 @@ const Profile = () => {
 
             <button
               className="delete-btn"
-              onClick={() => setShowDeleteModal(true)}
+              onClick={() => setOpenDeleteAlert({ show: true, data: userId })}
             >
               <MdOutlineDelete className="text-lg" />
               Delete Profile
@@ -130,6 +152,17 @@ const Profile = () => {
             onSeeMore={() => navigate("/expense")}
           />
         </div>
+
+        <Modal
+          isOpen={openDeleteAlert.show}
+          onClose={() => setOpenDeleteAlert({ show: false, data: null })}
+          title="Delete Profile"
+        >
+          <DeleteAlert
+            content="Are you sure you want to delete your profile? This action is not reversible!!"
+            onDelete={() => handleDeleteProfile(openDeleteAlert.data)}
+          />
+        </Modal>
       </div>
     </DashboardLayout>
   );

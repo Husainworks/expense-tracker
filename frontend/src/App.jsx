@@ -21,7 +21,7 @@ const App = () => {
             <Route path="/dashboard" exact element={<Home />} />
             <Route path="/income" exact element={<Income />} />
             <Route path="/expense" exact element={<Expense />} />
-            <Route path="/profile" exact element={<Profile />} />
+            <Route path="/profile/:id" element={<Profile />} />
           </Routes>
         </Router>
       </div>

@@ -1,3 +1,4 @@
+// utils/data.js
 import {
   LuLayoutDashboard,
   LuHandCoins,
@@ -6,7 +7,7 @@ import {
 } from "react-icons/lu";
 import { CgProfile } from "react-icons/cg";
 
-export const SIDE_MENU_DATA = [
+export const getSideMenuData = (userId = "") => [
   {
     id: "01",
     label: "Dashboard",
@@ -29,7 +30,7 @@ export const SIDE_MENU_DATA = [
     id: "04",
     label: "Profile",
     icon: CgProfile,
-    path: "/profile",
+    path: `/profile/${userId}`, // Dynamically use user ID
   },
   {
     id: "06",

@@ -2,7 +2,7 @@ import React from "react";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useNavigate } from "react-router";
-import { SIDE_MENU_DATA } from "../../utils/data";
+import { getSideMenuData } from "../../utils/data"; // replace SIDE_MENU_DATA
 import CharAvatar from "../Cards/CharAvatar";
 
 export const SideMenu = ({ activeMenu }) => {
@@ -48,7 +48,7 @@ export const SideMenu = ({ activeMenu }) => {
           </h5>
         </div>
 
-        {SIDE_MENU_DATA.map((data, index) => (
+        {getSideMenuData(user?._id).map((data, index) => (
           <button
             key={`menu_${index}`}
             className={`w-full flex items-center gap-4 text-[15px] ${
